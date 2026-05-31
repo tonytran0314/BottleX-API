@@ -13,18 +13,78 @@ datasource db {
   provider = "mysql"
 }
 
-model User { 
-  id    Int     @id @default(autoincrement()) 
-  email String  @unique
-  name  String?
-  posts Post[]
-} 
+model Payment {
+  id Int @id @default(autoincrement())
+  name String
+  amount Decimal @db.Decimal(10,2)
+  startDate DateTime
+  endDate DateTime
 
-model Post { 
-  id        Int     @id @default(autoincrement()) 
-  title     String
-  content   String? @db.Text
-  published Boolean @default(false) 
-  author    User    @relation(fields: [authorId], references: [id]) 
-  authorId  Int
-} 
+  instances PaymentInstance[]
+
+  dueDates PaymentDueDate[]
+
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+}
+
+model PaymentInstance {
+  id Int @id @default(autoincrement())
+  name String?
+  amount Decimal? @db.Decimal(10,2)
+  preparedAmount Decimal @default("0") @db.Decimal(10,2)
+  isPaid Boolean @default(false)
+  dueDate DateTime
+
+  paymentId Int
+  payment Payment @relation(fields: [paymentId], references: [id])
+}
+
+model PaymentDueDate {
+  id Int @id @default(autoincrement())
+  
+  paymentId Int
+  payment Payment @relation(fields: [paymentId], references: [id])
+
+  dueDateOnMonth Int 
+
+  @@unique([paymentId, dueDateOnMonth])
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  fullName String
+  email String
+
+  transactions Transaction[]
+
+  payments Payment[]
+
+  account Account?
+}
+
+model Transaction {
+  id Int @id @default(autoincrement())
+  type TransactionType
+  amount Decimal @db.Decimal(10,2)
+  note String?
+  transactionDate DateTime
+
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+model Account {
+  id Int @id @default(autoincrement())
+  balance Decimal @default("0") @db.Decimal(10,2)
+  safeToSpend Decimal @default("0") @db.Decimal(10,2)
+  safeToSpendUntil DateTime
+  
+  userId Int @unique
+  user User @relation(fields: [userId], references: [id])
+}
