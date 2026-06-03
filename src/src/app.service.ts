@@ -5,6 +5,6 @@ export class AppService {
   constructor(private prisma: PrismaService) {} 
 
   getHello(): any {
-    return this.prisma.user.findMany();
+    return 'Van Kim Hai Tuyet dang iu';
   }
 }
