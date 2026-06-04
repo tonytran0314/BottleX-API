@@ -1,15 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+
+const DEFAULT_INIT_BALANCE = 0;
+const DEFAULT_INIT_STP = 0;
+const DEFAULT_INIT_STP_UNTIL = new Date(); // today
 
 @Injectable()
 export class AccountsService {
-  create(createAccountDto: CreateAccountDto) {
-    return 'This action adds a new account';
-  }
+  constructor(private readonly prisma: PrismaService) {}
 
-  findAll() {
-    return `This action returns all accounts`;
+  create() {
+    const newAccount = this.prisma.account.create({
+      data: {
+        balance: DEFAULT_INIT_BALANCE,
+        safeToSpend: DEFAULT_INIT_STP,
+        safeToSpendUntil: DEFAULT_INIT_STP_UNTIL,
+        userId: 1
+      }
+    })
+    return newAccount;
   }
 
   findOne(id: number) {
@@ -20,7 +31,11 @@ export class AccountsService {
     return `This action updates a #${id} account`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} account`;
-  }
+  // findAll() {
+  //   return `This action returns all accounts`;
+  // }
+
+  // remove(id: number) {
+  //   return `This action removes a #${id} account`;
+  // }
 }

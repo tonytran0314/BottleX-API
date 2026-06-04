@@ -32,7 +32,7 @@ model PaymentInstance {
   id Int @id @default(autoincrement())
   name String?
   amount Decimal? @db.Decimal(10,2)
-  preparedAmount Decimal @default("0") @db.Decimal(10,2)
+  preparedAmount Decimal @default(0) @db.Decimal(10,2)
   isPaid Boolean @default(false)
   dueDate DateTime
 
@@ -81,9 +81,9 @@ enum TransactionType {
 
 model Account {
   id Int @id @default(autoincrement())
-  balance Decimal @default("0") @db.Decimal(10,2)
-  safeToSpend Decimal @default("0") @db.Decimal(10,2)
-  safeToSpendUntil DateTime
+  balance Decimal @default(0) @db.Decimal(10,2)
+  safeToSpend Decimal @default(0) @db.Decimal(10,2)
+  safeToSpendUntil DateTime @default(now())
   
   userId Int @unique
   user User @relation(fields: [userId], references: [id])
