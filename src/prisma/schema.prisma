@@ -55,6 +55,8 @@ model User {
   id Int @id @default(autoincrement())
   fullName String
   email String
+  googleId String? @unique
+  provider String @default("google")
 
   transactions Transaction[]
 

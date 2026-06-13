@@ -23,12 +23,23 @@ export class AccountsService {
     return newAccount;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} account`;
+  findOne() {
+    const foundAccount = this.prisma.account.findFirst({
+      where: {
+        userId: 1
+      }
+    })
+    return foundAccount;
   }
 
-  update(id: number, updateAccountDto: UpdateAccountDto) {
-    return `This action updates a #${id} account`;
+  update(updateAccountDto: UpdateAccountDto) {
+    const account = this.prisma.account.update({
+      where: {
+        userId: 1
+      },
+      data: updateAccountDto
+    })
+    return account;
   }
 
   // findAll() {

@@ -12,14 +12,14 @@ export class AccountsController {
     return this.accountsService.create();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.accountsService.findOne(+id);
+  @Get()
+  findOne() {
+    return this.accountsService.findOne();
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAccountDto: UpdateAccountDto) {
-    return this.accountsService.update(+id, updateAccountDto);
+  @Patch()
+  update(@Body() updateAccountDto: UpdateAccountDto) {
+    return this.accountsService.update(updateAccountDto);
   }
 
   // @Get()
