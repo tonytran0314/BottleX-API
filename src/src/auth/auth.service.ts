@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
+import { AccountsService } from '../accounts/accounts.service';
 
 type GoogleUser = {
   googleId: string;
@@ -13,6 +14,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
+    private accountService: AccountsService
   ) {}
 
   async googleLogin(googleUser: GoogleUser) {
@@ -21,6 +23,7 @@ export class AuthService {
     });
 
     if (!user) {
+      /* ----------------- If user not found => create a new user ----------------- */
       user = await this.prisma.user.create({
         data: {
           email: googleUser.email,
@@ -29,8 +32,13 @@ export class AuthService {
           provider: 'google',
         },
       });
+      
+      /* ----------------- Then create a new account for that user ---------------- */
+      await this.accountService.create(user.id);
     }
 
+
+    /* ------------------------------ Create token ------------------------------ */
     const accessToken = await this.jwtService.signAsync({
       sub: user.id,
       email: user.email,

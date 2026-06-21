@@ -11,22 +11,25 @@ const DEFAULT_INIT_STP_UNTIL = new Date(); // today
 export class AccountsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create() {
+  create(userId: number) {
     const newAccount = this.prisma.account.create({
       data: {
         balance: DEFAULT_INIT_BALANCE,
         safeToSpend: DEFAULT_INIT_STP,
         safeToSpendUntil: DEFAULT_INIT_STP_UNTIL,
-        userId: 1
+        userId: userId
       }
     })
     return newAccount;
   }
 
-  findOne() {
-    const foundAccount = this.prisma.account.findFirst({
-      where: {
-        userId: 1
+  getAccount(userId: number) {
+    const foundAccount = this.prisma.account.findUnique({
+      where: { userId },
+      select: {
+        balance: true,
+        safeToSpend: true,
+        safeToSpendUntil: true
       }
     })
     return foundAccount;

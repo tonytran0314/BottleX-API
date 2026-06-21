@@ -5,15 +5,16 @@ import { AuthService } from './auth.service';
 import { GoogleStrategy } from './strategies/google.strategies';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtStrategy } from './strategies/jwt.strategies';
+import { AccountsService } from 'src/accounts/accounts.service';
 
 @Module({
   imports: [
     JwtModule.register({
       secret: process.env.JWT_SECRET!,
-      signOptions: { expiresIn: '120s' },
+      signOptions: { expiresIn: '1d' },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, GoogleStrategy, PrismaService, JwtStrategy],
+  providers: [AuthService, GoogleStrategy, PrismaService, JwtStrategy, AccountsService],
 })
 export class AuthModule {}
