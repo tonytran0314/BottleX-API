@@ -35,11 +35,9 @@ export class AccountsService {
     return foundAccount;
   }
 
-  update(updateAccountDto: UpdateAccountDto) {
+  updateAccount(updateAccountDto: UpdateAccountDto, userId: number) {
     const account = this.prisma.account.update({
-      where: {
-        userId: 1
-      },
+      where: { userId },
       data: updateAccountDto
     })
     return account;

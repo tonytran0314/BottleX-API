@@ -20,8 +20,9 @@ export class AccountsController {
   }
 
   @Patch()
-  update(@Body() updateAccountDto: UpdateAccountDto) {
-    return this.accountsService.update(updateAccountDto);
+  @UseGuards(JwtAuthGuard)
+  updateAccount(@Body() updateAccountDto: UpdateAccountDto, @Req() req) {
+    return this.accountsService.updateAccount(updateAccountDto, req.user.id);
   }
 
   // @Get()
