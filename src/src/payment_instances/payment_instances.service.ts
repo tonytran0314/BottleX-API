@@ -1,26 +1,86 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePaymentInstanceDto } from './dto/create-payment_instance.dto';
 import { UpdatePaymentInstanceDto } from './dto/update-payment_instance.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class PaymentInstancesService {
-  create(createPaymentInstanceDto: CreatePaymentInstanceDto) {
-    return 'This action adds a new paymentInstance';
-  }
+  constructor(private readonly prisma: PrismaService) {}
+
+  // create(createPaymentInstanceDto: CreatePaymentInstanceDto) {
+  //   return 'This action adds a new paymentInstance';
+  // }
 
   findAll() {
     return `This action returns all paymentInstances`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} paymentInstance`;
+  async findOne(paymentInstanceId: number, userId: number) {
+    const paymentInstance = await this.prisma.paymentInstance.findFirst({
+      where: {
+        id: paymentInstanceId,
+        payment: { userId }
+      },
+      include: {
+        payment: true
+      }
+    })
+    return paymentInstance;
   }
 
-  update(id: number, updatePaymentInstanceDto: UpdatePaymentInstanceDto) {
-    return `This action updates a #${id} paymentInstance`;
+  async update(
+    paymentInstanceId: number,
+    updatePaymentInstanceDto: UpdatePaymentInstanceDto,
+    userId: number,
+  ) {
+    const paymentInstance =
+      await this.prisma.paymentInstance.findFirst({
+        where: {
+          id: paymentInstanceId,
+          payment: {
+            userId,
+          },
+        },
+      });
+
+    if (!paymentInstance) {
+      throw new NotFoundException(
+        'Payment instance not found',
+      );
+    }
+
+    return this.prisma.paymentInstance.update({
+      where: {
+        id: paymentInstanceId,
+      },
+      data: updatePaymentInstanceDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} paymentInstance`;
+  async remove(
+    paymentInstanceId: number,
+    userId: number,
+  ) {
+    const paymentInstance =
+      await this.prisma.paymentInstance.findFirst({
+        where: {
+          id: paymentInstanceId,
+          payment: {
+            userId,
+          },
+        },
+      });
+
+    if (!paymentInstance) {
+      throw new NotFoundException(
+        'Payment instance not found',
+      );
+    }
+
+    return this.prisma.paymentInstance.delete({
+      where: {
+        id: paymentInstanceId,
+      },
+    });
   }
 }

@@ -26,13 +26,13 @@ export class PaymentsController {
     return this.paymentsService.findOne(+paymentId, req.user.id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePaymentDto: UpdatePaymentDto) {
-    return this.paymentsService.update(+id, updatePaymentDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updatePaymentDto: UpdatePaymentDto) {
+  //   return this.paymentsService.update(+id, updatePaymentDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.paymentsService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.paymentsService.remove(+id);
+  // }
 }

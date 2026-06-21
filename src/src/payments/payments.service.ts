@@ -56,7 +56,8 @@ export class PaymentsService {
     const payments = await this.prismaService.payment.findMany({
       where: { userId },
       include: {
-        dueDates: true
+        dueDates: true,
+        instances: true
       }
     })
     return payments;
