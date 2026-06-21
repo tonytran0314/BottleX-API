@@ -21,8 +21,11 @@ export class PaymentsService {
     return newPayment;
   }
 
-  findAll() {
-    return `This action returns all payments`;
+  async findAll(userId: number) {
+    const payments = await this.prismaService.payment.findMany({
+      where: { userId }
+    })
+    return payments;
   }
 
   findOne(id: number) {
