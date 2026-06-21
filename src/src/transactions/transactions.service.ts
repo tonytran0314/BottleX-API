@@ -8,41 +8,38 @@ import { NotFoundError } from 'rxjs';
 export class TransactionsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createTransactionDto: CreateTransactionDto) {
+  async create(createTransactionDto: CreateTransactionDto, userId: number) {
     const newTransaction = await this.prisma.transaction.create({
       data: {
         type: createTransactionDto.type,
         amount: createTransactionDto.amount,
         note: createTransactionDto.note?.trim() || null,
         transactionDate: createTransactionDto.transactionDate,
-        // ================================================================== 
-        // ====================== REPLACE WITH USER ID ======================
-        // ==================================================================
-        userId: 1 
+        userId: userId
       }
     });
 
     return newTransaction;
   }
 
-  async findAll() {
+  async findAll(userId: number) {
     const transactions = await this.prisma.transaction.findMany({
-      where: { userId: 1}
+      where: { userId }
     })
 
     return transactions;
   }
 
-  async findOne(id: number) {
+  async findOne(transactionId: number, userId: number) {
     const transaction = await this.prisma.transaction.findFirst({
       where: { 
-        id: id, // transaction ID
-        userId: 1
+        id: transactionId,
+        userId: userId
       } 
     })
 
     if(!transaction) {
-      throw new NotFoundException(`Transaction ${id} not found`);
+      throw new NotFoundException(`Transaction ${transactionId} not found`);
     }
 
     return transaction;
