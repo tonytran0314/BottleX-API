@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsDateString, IsNumber, IsString, Min } from 'class-validator';
+import { IsArray, IsDateString, IsNumber, IsString, Min, IsInt } from 'class-validator';
 
 export class CreatePaymentDto {
     @IsString()
@@ -15,4 +15,8 @@ export class CreatePaymentDto {
     
     @IsDateString()
     endDate: string;
+
+    @IsArray()
+    @IsInt({ each: true })
+    dueDates: number[];
 }
