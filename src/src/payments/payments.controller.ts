@@ -20,9 +20,10 @@ export class PaymentsController {
     return this.paymentsService.findAll(req.user.id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.paymentsService.findOne(+id);
+  @Get(':paymentId')
+  @UseGuards(JwtAuthGuard)
+  findOne(@Param('paymentId') paymentId: string, @Req() req) {
+    return this.paymentsService.findOne(+paymentId, req.user.id);
   }
 
   @Patch(':id')

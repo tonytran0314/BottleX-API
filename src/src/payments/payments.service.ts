@@ -28,8 +28,14 @@ export class PaymentsService {
     return payments;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} payment`;
+  async findOne(paymentId: number, userId: number) {
+    const payment = await this.prismaService.payment.findUnique({
+      where: { 
+        id: paymentId,
+        userId: userId 
+      }
+    })
+    return payment;
   }
 
   update(id: number, updatePaymentDto: UpdatePaymentDto) {
