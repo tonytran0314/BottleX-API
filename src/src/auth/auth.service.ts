@@ -44,6 +44,6 @@ export class AuthService {
       email: user.email,
     });
 
-    return { accessToken };
+    return accessToken;
   }
 }
