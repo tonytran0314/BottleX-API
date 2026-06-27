@@ -24,7 +24,7 @@ export class AuthController {
       httpOnly: true,
       secure: false, // local dev
       sameSite: 'lax',
-      maxAge: 1000 * 120
+      maxAge: 1000 * 60 * 60 * 24
     })
 
     return res.redirect(`${process.env.FRONTEND_URL}/user`);
