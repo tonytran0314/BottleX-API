@@ -15,7 +15,9 @@ export class TransactionsService {
         amount: createTransactionDto.amount,
         note: createTransactionDto.note?.trim() || null,
         transactionDate: createTransactionDto.transactionDate,
-        userId: userId
+        userId: userId,
+        name: createTransactionDto.name,
+        image: createTransactionDto.image
       }
     });
 

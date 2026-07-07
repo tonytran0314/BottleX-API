@@ -21,4 +21,10 @@ export class CreateTransactionDto {
 
     @IsDateString()
     transactionDate: string;
+
+    @IsString()
+    name: string;
+
+    @IsString()
+    image: string;
 }
