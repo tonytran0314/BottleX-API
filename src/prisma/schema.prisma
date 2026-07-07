@@ -67,10 +67,12 @@ model User {
 
 model Transaction {
   id Int @id @default(autoincrement())
-  type TransactionType
-  amount Decimal @db.Decimal(10,2)
+  name String @default("transaction")
+  type TransactionType @default(EXPENSE)
+  amount Decimal @db.Decimal(10,2) @default(0)
   note String?
-  transactionDate DateTime
+  image String?
+  transactionDate DateTime @default(now())
 
   userId Int
   user User @relation(fields: [userId], references: [id])
