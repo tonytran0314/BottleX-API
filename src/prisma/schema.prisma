@@ -62,6 +62,10 @@ model User {
 
   payments Payment[]
 
+  wishlists Wishlist[]
+
+  funds Fund[]
+
   account Account?
 }
 
@@ -90,5 +94,28 @@ model Account {
   safeToSpendUntil DateTime @default(now())
   
   userId Int @unique
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Wishlist {
+  id Int @id @default(autoincrement())
+  name String @default("wishlist item")
+  price Decimal @default(0) @db.Decimal(10,2)
+  reserved Decimal @default(0) @db.Decimal(10,2)
+  image String @default("#")
+  description String @default("description for the wishlist item")
+  
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Fund {
+  id Int @id @default(autoincrement())
+  name String @default("fund item")
+  reserved Decimal @default(0) @db.Decimal(10,2)
+  image String @default("#")
+  description String @default("description for the fund item")
+  
+  userId Int
   user User @relation(fields: [userId], references: [id])
 }
