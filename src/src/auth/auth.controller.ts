@@ -27,7 +27,7 @@ export class AuthController {
       maxAge: 1000 * 60 * 60 * 24
     })
 
-    return res.redirect(`${process.env.FRONTEND_URL}/user`);
+    return res.redirect(`${process.env.FRONTEND_URL}/user/dashboard`);
   }
 
   @Get('me')
