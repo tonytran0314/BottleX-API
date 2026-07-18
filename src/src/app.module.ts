@@ -9,9 +9,10 @@ import { AccountsModule } from './accounts/accounts.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { WishlistsModule } from './wishlists/wishlists.module';
+import { FundsModule } from './funds/funds.module';
 
 @Module({
-  imports: [PrismaModule, PaymentsModule, PaymentInstancesModule, TransactionsModule, AccountsModule, UsersModule, AuthModule, WishlistsModule],
+  imports: [PrismaModule, PaymentsModule, PaymentInstancesModule, TransactionsModule, AccountsModule, UsersModule, AuthModule, WishlistsModule, FundsModule],
   controllers: [AppController],
   providers: [AppService],
 })
