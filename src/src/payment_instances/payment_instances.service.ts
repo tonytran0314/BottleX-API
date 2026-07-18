@@ -11,8 +11,17 @@ export class PaymentInstancesService {
   //   return 'This action adds a new paymentInstance';
   // }
 
-  findAll() {
-    return `This action returns all paymentInstances`;
+  async findAll(userId: number) {
+    const paymentInstances = await this.prisma.paymentInstance.findMany({
+      where: {
+        payment: { userId }
+      },
+      orderBy: {
+        dueDate: 'asc'
+      }
+    })
+
+    return paymentInstances;
   }
 
   async findOne(paymentInstanceId: number, userId: number) {

@@ -15,8 +15,8 @@ export class PaymentInstancesController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-  findAll() {
-    return this.paymentInstancesService.findAll();
+  findAll(@Req() req) {
+    return this.paymentInstancesService.findAll(req.user.id);
   }
 
   @Get(':paymentInstanceId')
